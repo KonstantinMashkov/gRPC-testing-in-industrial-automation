@@ -70,7 +70,7 @@ signal = {
     'quality': 0,                                        # Качество сигнала
     'time': timestamp_ms,                                 # Текущая временная метка
     'type_valye': elecont_pb2.ElecontSignalType.INT16,   # Тип сигнала (используем перечисление)
-    'value': '44',                                       # Значение сигнала
+    'value': '555',                                       # Значение сигнала
     'str_quality': "GOOD"                                # Строковое описание качества
 }
 

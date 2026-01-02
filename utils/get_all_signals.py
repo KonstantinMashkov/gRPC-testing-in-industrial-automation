@@ -11,6 +11,10 @@ import grpc
 # Импортируем сгенерированные файлы
 from proto import elecont_pb2, elecont_pb2_grpc
 
+from google.protobuf.json_format import MessageToDict
+
+
+
 
 def get_all_signals(ip_address_and_port):
     """
@@ -47,3 +51,39 @@ response_get_all_signals = get_all_signals(ip_user_channel_client)
 
 # Вывод в консоль полученного результата
 print(response_get_all_signals)
+
+#Код готов теперь нужно добавить в статью____________________________________________________________
+def get_guids(signals_pool):
+    """
+    Извлекает все уникальные идентификаторы (GUID) из различных типов сигналов.
+
+    Параметры:
+        signals_pool: Объект Protobuf, содержащий различные типы сигналов.
+
+    Возвращаемое значение:
+        list: Список уникальных идентификаторов (GUID) всех сигналов, содержащихся в переданном объекте.
+    """
+    try:
+        # Преобразуем объект Protobuf в словарь Python
+        signals_data = MessageToDict(signals_pool)
+        
+        # Список для гуидов
+        guides = []
+
+        # Сбор всех GUID проходим по каждому типу сигнала
+        for signal_type in signals_data.keys():  # keys() вернут названия ключей ('booleanSignal', 'int16Signal', и т.д "Тетируемое приложение подерживает 13 типов сигналов")
+            # Получаем список сигналов для текущего типа
+            signals_list = signals_data.get(signal_type)  
+            
+            # Проходим по каждому сигналу и добавляем GUID в список
+            for signal in signals_list:
+                guides.append(signal['sigprop']['guid'])
+
+        # Возвращаем все GUID
+        return guides
+    except Exception as ex:
+        print(f"Произошла непредвиденная ошибка: {ex}")
+
+
+guides = get_guids(response_get_all_signals)
+print(guides)
