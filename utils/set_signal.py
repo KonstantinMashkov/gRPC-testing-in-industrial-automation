@@ -42,11 +42,17 @@ def set_signal(ip_address_and_port, guid, quality, timestamp, type_valye, value,
         # Выполняем запрос на сервер, вызывая метод SetSignal
         stub.SetSignal(request_signal)
         
+        # Получаем сигнал по GUID и сравниваем значение
+        response_get_signal_by_guid = stub.GetSignalByGuid(elecont_pb2.Guid(guid=guid))
         
+        # Проверяем совпадение значения сигнала
+        if value == response_get_signal_by_guid.value:
+            # Сообщаем об успешной отправке
+            print('Сигнал отправлен успешно.')
+        else:
+            # Если отправленное значение не совпадает со значением в приложение вызываем ошибку
+            raise Exception("Значения сигнала не совпадают!")  
         
-        # Сообщаем об успехе операции
-        print('Сигнал отправлен успешно.')
-    
     # Обрабатываем любые ошибки gRPC
     except grpc.RpcError as e:
         print(f'gRPC ошибка: {e.details()}')
