@@ -1,4 +1,4 @@
-#   rpc GetAllSignals (Empty) returns (SignalPool) {}
+
 
 """
 Модуль для демонстрации запроса к gRPC-серверу с целью получения сигнала.
@@ -22,8 +22,6 @@ def get_all_signals(ip_address_and_port):
     try:
         # Создаем соединение с сервером
         channel = grpc.insecure_channel(ip_address_and_port)
-        
-        # Создаем прокси-класс для обращения к службе Elecont
         stub = elecont_pb2_grpc.ElecontStub(channel)
         
         # Передаем пустой объект Empty в качестве аргумента
