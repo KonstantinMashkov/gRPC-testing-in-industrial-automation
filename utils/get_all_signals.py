@@ -1,7 +1,5 @@
-
-
 """
-Модуль для демонстрации запроса к gRPC-серверу с целью получения сигнала.
+Модуль "get_all_signals.py" для демонстрации запроса к gRPC-серверу с целью получения сигнала.
 Используется протокол буферов Protobuf и библиотека gRPC.
 """
 
@@ -11,10 +9,8 @@ import grpc
 # Импортируем сгенерированные файлы
 from proto import elecont_pb2, elecont_pb2_grpc
 
+# Импортируем библиотеку для преобразования объектов Protobuf в обычные Python-словари формата JSON.
 from google.protobuf.json_format import MessageToDict
-
-
-
 
 def get_all_signals(ip_address_and_port):
     """
@@ -42,17 +38,7 @@ def get_all_signals(ip_address_and_port):
         print(f'gRPC ошибка: {e.details()}')
             
 
-
-# IP-адрес и порт, по которым мы работаем
-ip_user_channel_client = '127.0.0.1:29041'
-
-# Запускаем получение сигналов
-response_get_all_signals = get_all_signals(ip_user_channel_client)
-
-# Вывод в консоль полученного результата
-print(response_get_all_signals)
-
-#Код готов теперь нужно добавить в статью____________________________________________________________
+# функция для получения все GUID
 def get_guids(signals_pool):
     """
     Извлекает все уникальные идентификаторы (GUID) из различных типов сигналов.
@@ -81,9 +67,6 @@ def get_guids(signals_pool):
 
         # Возвращаем все GUID
         return guides
+    
     except Exception as ex:
         print(f"Произошла непредвиденная ошибка: {ex}")
-
-
-guides = get_guids(response_get_all_signals)
-print(guides)

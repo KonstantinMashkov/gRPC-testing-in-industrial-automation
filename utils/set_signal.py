@@ -1,5 +1,5 @@
 """
-Модуль для демонстрации запроса к gRPC-серверу с целью отправки сигнала.
+Модуль "set_signal.py" для демонстрации запроса к gRPC-серверу с целью отправки сигнала.
 Используется протокол буферов Protobuf и библиотека gRPC.
 """
 
@@ -13,7 +13,7 @@ from proto import elecont_pb2, elecont_pb2_grpc
 import time
 
 
-def set_signal(ip_address_and_port, guid, quality, timestamp, type_valye, value, str_quality):
+def set_signal(ip_address_and_port, guid, value):
     """Отправляет сигнал на удалённый сервер с указанными параметрами.
 
     Параметры:
@@ -25,6 +25,10 @@ def set_signal(ip_address_and_port, guid, quality, timestamp, type_valye, value,
         value (str): Текущее значение сигнала.
         str_quality (str): Строковое представление качества сигнала.
     """
+    
+    # Получаем текущее время в миллисекундах
+    timestamp_ms = int(time.time() * 1000)
+    
     try:
         # Устанавливаем соединение с удалённым сервером по указанному адресу и порту
         channel = grpc.insecure_channel(ip_address_and_port)
@@ -33,11 +37,11 @@ def set_signal(ip_address_and_port, guid, quality, timestamp, type_valye, value,
         # Создаём объект Signal и заполняем его необходимыми данными
         request_signal = elecont_pb2.Signal()
         request_signal.guid = guid              # Идентификатор сигнала
-        request_signal.quality = quality        # Показатель качества
-        request_signal.time = timestamp         # Временная метка в миллисекундах
-        request_signal.type.value = type_valye        # Тип сигнала (перечисление ElecontSignalType)
+        request_signal.quality = 0        # Показатель качества (В текущей реализации всегда 0 - Good)
+        request_signal.time = timestamp_ms         # Временная метка в миллисекундах
+        request_signal.type.value = elecont_pb2.ElecontSignalType.INT16        # Тип сигнала (В текущей реализации всегда int16)
         request_signal.value = value            # Значение сигнала
-        request_signal.str_quality = str_quality # Строковое описание качества
+        request_signal.str_quality = "GOOD" # Строковое описание качества (В текущей реализации всегда Good)
         
         # Выполняем запрос на сервер, вызывая метод SetSignal
         stub.SetSignal(request_signal)
@@ -51,28 +55,12 @@ def set_signal(ip_address_and_port, guid, quality, timestamp, type_valye, value,
             print('Сигнал отправлен успешно.')
         else:
             # Если отправленное значение не совпадает со значением в приложение вызываем ошибку
-            raise Exception("Значения сигнала не совпадают!")  
+            raise Exception("Произошла ошибка, значения сигнала не совпадают!")  
         
-    # Обрабатываем любые ошибки gRPC
+    # Обработка ошибок
     except grpc.RpcError as e:
         print(f'gRPC ошибка: {e.details()}')
 
 
-# Адрес и порт нашего локального сервера
-ip_user_channel_client = '127.0.0.1:29041'
 
-# Получаем текущее время в миллисекундах
-timestamp_ms = int(time.time() * 1000)
 
-# Создаём словарь с информацией о сигнале
-signal = {
-    'guid': 'b6ae1b69-faae-4464-b93b-5a961f485287',     # GUID сигнала
-    'quality': 0,                                        # Качество сигнала
-    'time': timestamp_ms,                                 # Текущая временная метка
-    'type_valye': elecont_pb2.ElecontSignalType.INT16,   # Тип сигнала (используем перечисление)
-    'value': '555',                                       # Значение сигнала
-    'str_quality': "GOOD"                                # Строковое описание качества
-}
-
-# Вызываем функцию отправки сигнала с соответствующими параметрами
-set_signal(ip_user_channel_client, signal['guid'], signal['quality'], signal['time'], signal['type_valye'], signal['value'], signal['str_quality'])
