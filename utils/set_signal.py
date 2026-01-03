@@ -52,7 +52,7 @@ def set_signal(ip_address_and_port, guid, value):
         # Проверяем совпадение значения сигнала
         if value == response_get_signal_by_guid.value:
             # Сообщаем об успешной отправке
-            print('Сигнал отправлен успешно.')
+            print(f"Сигнал с GUID={guid} успешно обновлён.")
         else:
             # Если отправленное значение не совпадает со значением в приложение вызываем ошибку
             raise Exception("Произошла ошибка, значения сигнала не совпадают!")  
@@ -60,7 +60,3 @@ def set_signal(ip_address_and_port, guid, value):
     # Обработка ошибок
     except grpc.RpcError as e:
         print(f'gRPC ошибка: {e.details()}')
-
-
-
-

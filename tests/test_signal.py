@@ -27,7 +27,6 @@ def test_signals():
             try:
                 # Устанавливаем новое значение сигнала
                 set_signal.set_signal(ip_user_channel_client, guid, '77')
-                print(f"Сигнал с GUID={guid} успешно обновлён.")
             except Exception as exc:
                 print(f"Ошибка обновления сигнала с GUID={guid}: {exc}")
                 
