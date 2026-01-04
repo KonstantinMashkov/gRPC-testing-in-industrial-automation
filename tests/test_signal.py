@@ -1,3 +1,7 @@
+"""
+Модуль "test_signal.py" для демонстрации примера авто-теста.
+"""
+
 from utils import get_all_signals, set_signal
 
 def test_signals():
