@@ -35,7 +35,7 @@ def get_all_signals(ip_address_and_port):
     
     # Обработка ошибок
     except grpc.RpcError as e:
-        print(f'gRPC ошибка: {e.details()}')
+        raise grpc.RpcError(f'gRPC ошибка: {e.details()}')
             
 
 # функция для получения все GUID

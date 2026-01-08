@@ -30,7 +30,7 @@ def test_signals():
         for guid in guides:
             try:
                 # Устанавливаем новое значение сигнала
-                set_signal.set_signal(ip_user_channel_client, guid, '79')
+                set_signal.set_signal(ip_user_channel_client, guid, '555')
             except Exception as exc:
                 raise Exception(f"Ошибка обновления сигнала с GUID={guid}: {exc}")
                 
