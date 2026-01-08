@@ -21,7 +21,7 @@ def set_signal(ip_address_and_port, guid, value):
         guid (str): Уникальный идентификатор сигнала.
         quality (int): Показатель качества сигнала.
         timestamp (int): Временная отметка в миллисекундах.
-        type_valye (int or enum): Тип сигнала (используя значения перечисления ElecontSignalType).
+        type_valye (int or enum): Тип сигнала.
         value (str): Текущее значение сигнала.
         str_quality (str): Строковое представление качества сигнала.
     """
@@ -59,4 +59,4 @@ def set_signal(ip_address_and_port, guid, value):
         
     # Обработка ошибок
     except grpc.RpcError as e:
-        print(f'gRPC ошибка: {e.details()}')
+        raise Exception(f'gRPC ошибка: {e.details()}')

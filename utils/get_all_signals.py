@@ -69,4 +69,4 @@ def get_guids(signals_pool):
         return guides
     
     except Exception as ex:
-        print(f"Произошла непредвиденная ошибка: {ex}")
+        raise Exception(f"Произошла непредвиденная ошибка: {ex}")
